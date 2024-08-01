@@ -23,7 +23,7 @@ const VehicleRegistration = () => {
     if (validateForm()) {
       const postData = { ...post, Status: true };
       axios
-        .post("https://srv496943145.host.ultaserver.net/postVehicle", postData)
+        .post("http://localhost:3000/postVehicle", postData)
         .then((response) => {
           console.log(response);
           setSubmitStatus('success');

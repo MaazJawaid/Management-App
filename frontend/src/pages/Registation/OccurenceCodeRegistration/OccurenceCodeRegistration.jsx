@@ -21,7 +21,7 @@ const OccurrenceCodeRegistration = () => {
     event.preventDefault();
     if (validateForm()) {
       axios
-        .post('https://srv496943145.host.ultaserver.net/postoccurance', post)
+        .post('http://localhost:3000/postoccurance', post)
         .then(response => {
           setSubmitStatus('success');
           setTimeout(() => {

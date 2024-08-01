@@ -14,7 +14,7 @@ const ServiceListChild = () => {
 
   useEffect(() => {
     axios
-      .get(`https://srv496943145.host.ultaserver.net/getnewoccuranceAll/${id}`)
+      .get(`http://localhost:3000/getnewoccuranceAll/${id}`)
       .then((response) => {
         // Set the fetched data in state
         setData(response.data);
@@ -62,13 +62,13 @@ const ServiceListChild = () => {
 
       console.log(updatedFormData)
 
-      // const updateResponse = await axios.put(`https://srv496943145.host.ultaserver.net/updateOccurance/${id}`, {
+      // const updateResponse = await axios.put(`http://localhost:3000/updateOccurance/${id}`, {
       //   Request: data.Request,
       //   Description: data.Description
       // });
       // console.log("Data updated successfully:", updateResponse.data);      
       
-      const historyResponse = await axios.post('https://srv496943145.host.ultaserver.net/occurrence/edit/history', updatedFormData);
+      const historyResponse = await axios.post('http://localhost:3000/occurrence/edit/history', updatedFormData);
       console.log(historyResponse.data);
       setSubmitStatus('Edited');
       

@@ -78,7 +78,7 @@ const Report = () => {
 
     useEffect(() => {
         setLoading(true);
-        axios.get("https://srv496943145.host.ultaserver.net/occurencewithstatusthree")
+        axios.get("http://localhost:3000/occurencewithstatusthree")
             .then((res) => {
                 setResult(res.data);
                 setFilteredResult(res.data)
@@ -112,7 +112,7 @@ const Report = () => {
         const token = localStorage.getItem("token");
         const ReportCreatedBy = jwtDecode(token).username;
 
-        axios.get(`https://srv496943145.host.ultaserver.net/create-pdf/new/${id}?ReportCreatedBy=${ReportCreatedBy}`, { responseType: 'text' })
+        axios.get(`http://localhost:3000/create-pdf/new/${id}?ReportCreatedBy=${ReportCreatedBy}`, { responseType: 'text' })
             .then((response) => {
                 const newWindow = window.open();
                 newWindow.document.write(response.data);
@@ -128,14 +128,14 @@ const Report = () => {
         const ReportCreatedBy = jwtDecode(token).username;
 
         try {
-            const response = await axios.get(`https://srv496943145.host.ultaserver.net/u/download-pdf/${id}`, {
+            const response = await axios.get(`http://localhost:3000/u/download-pdf/${id}`, {
                 params: {
                     ReportCreatedBy: ReportCreatedBy
                 }
             });
 
             axios({
-                url: `https://srv496943145.host.ultaserver.net/pdf/${id}`,
+                url: `http://localhost:3000/pdf/${id}`,
                 method: 'GET',
                 responseType: 'blob', // Important: Set the responseType to 'blob' to receive binary data
             })
@@ -433,7 +433,7 @@ const Report = () => {
         const ReportCreatedBy = jwtDecode(token).username;
 
         // Send ID and ReportCreatedBy to backend to generate PDF
-        axios.post(`https://srv496943145.host.ultaserver.net/create-pdf/${id}`, { ReportCreatedBy })
+        axios.post(`http://localhost:3000/create-pdf/${id}`, { ReportCreatedBy })
             .then((response) => {
 
                 const { occurrence, report, ReportCreatedBy } = response.data;

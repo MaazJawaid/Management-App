@@ -22,7 +22,7 @@ const StreetRegistration = () => {
     event.preventDefault();
     if (validateForm()) {
       axios
-        .post("https://srv496943145.host.ultaserver.net/poststreet", Post)
+        .post("http://localhost:3000/poststreet", Post)
         .then((response) => {
           console.log(response);
           setSubmitStatus("success");

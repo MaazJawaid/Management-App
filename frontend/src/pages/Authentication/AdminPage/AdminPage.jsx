@@ -64,7 +64,7 @@ const Login = ({ onLogout }) => {
     e.preventDefault();
     if (validation()) {
       axios
-        .post("https://srv496943145.host.ultaserver.net/admin/dashboard/registerUser", {
+        .post("http://localhost:3000/admin/dashboard/registerUser", {
           username,
           password,
           designation,

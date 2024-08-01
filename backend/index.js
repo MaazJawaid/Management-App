@@ -9,7 +9,7 @@ const path = require('path');
 
 const app = express();
 
-const allowedOrigin = 'https://6658756300379207d20f3472--beautiful-stroopwafel-df89be.netlify.app'; {/* I have to edit his path later */ }
+const allowedOrigin = 'http://localhost:5173'; {/* I have to edit his path later */ }
 app.use(cors({
   origin: allowedOrigin,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -29,18 +29,14 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-const uri = "mongodb+srv://maazk3611:MWHuY3L0IcmFppYG@cluster0.vpbjarw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.connect(uri, { dbName: 'VehicleMng'})
-
-// const uri = "mongodb://localhost:27017/";
-// mongoose.connect(uri, { dbName: 'VehicleMng', useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => {
-//     console.log("Connected to MongoDB Atlas");
-//   })
-//   .catch((error) => {
-//     console.error("Error connecting to MongoDB Atlas:", error);
-//   });
+const uri = "mongodb://localhost:27017/";
+mongoose.connect(uri, { dbName: 'VehicleMng', useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to MongoDB Atlas");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB Atlas:", error);
+  });
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server Is Running");

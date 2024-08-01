@@ -18,7 +18,7 @@ const ViewItems = () => {
   const [designation, setDesignation] = useState("");
 
   useEffect(() => {
-    axios.get("https://srv496943145.host.ultaserver.net/admin/dashboard/viewitems/getRegisteredUser")
+    axios.get("http://localhost:3000/admin/dashboard/viewitems/getRegisteredUser")
       .then((res) => {
         setGetRegisteredUser(res.data);
       });
@@ -33,7 +33,7 @@ const ViewItems = () => {
   };
 
   const handleSave = () => {
-    axios.put(`https://srv496943145.host.ultaserver.net/updateOccurence/${selectedUser._id}`, { username, password, designation })
+    axios.put(`http://localhost:3000/updateOccurence/${selectedUser._id}`, { username, password, designation })
       .then((res) => {
         console.log(res);
         // Update the state to reflect the changes
@@ -61,7 +61,7 @@ const ViewItems = () => {
 
   const handleConfirmDelete = () => {
     // Implement delete logic here
-    axios.delete(`https://srv496943145.host.ultaserver.net/deleteoccurrence/${selectedUser._id}`)
+    axios.delete(`http://localhost:3000/deleteoccurrence/${selectedUser._id}`)
       .then((res) => {
         console.log("user deleted", res);
         // Update the state to remove the deleted user

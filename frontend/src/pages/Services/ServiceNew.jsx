@@ -71,7 +71,7 @@ const ServiceNew = () => {
   useEffect(() => {
     // Fetch data when the component mounts
     axios
-      .get("https://srv496943145.host.ultaserver.net/getoccurance")
+      .get("http://localhost:3000/getoccurance")
       .then((response) => {
         // Set the fetched data in state
         setData(response.data);
@@ -83,7 +83,7 @@ const ServiceNew = () => {
       });
 
     axios
-      .get("https://srv496943145.host.ultaserver.net/getnewoccurance")
+      .get("http://localhost:3000/getnewoccurance")
       .then((response) => {
         // Set the fetched data in state
         setcountOcc(response.data);
@@ -96,7 +96,7 @@ const ServiceNew = () => {
       });
 
     axios
-      .get("https://srv496943145.host.ultaserver.net/getGarrison")
+      .get("http://localhost:3000/getGarrison")
       .then((response) => {
         setNewGarrison(response.data)
         console.log("Garrson", response.data)
@@ -111,7 +111,7 @@ const ServiceNew = () => {
 
 
     axios
-      .get("https://srv496943145.host.ultaserver.net/getGarrisonFalse")
+      .get("http://localhost:3000/getGarrisonFalse")
       .then((response) => {
         setGarrsionIdFalse(response.data)
         console.log("GarrsonFalse", response.data)
@@ -173,7 +173,7 @@ const ServiceNew = () => {
 
     // calling coocurence for autofilling( api )
     if (name === "phone") {
-      axios.get(`https://srv496943145.host.ultaserver.net/getoccurencebyphonenumber/${value}`)
+      axios.get(`http://localhost:3000/getoccurencebyphonenumber/${value}`)
         .then((res) => {
           console.log("occ is ", res);
           console.log("occurence number is s", res.data.occurance_Number)
@@ -374,12 +374,12 @@ const ServiceNew = () => {
     
       const dateTime = `${formattedDate} at ${formattedTime}`;
       
-      const responsePost = await axios.post("https://srv496943145.host.ultaserver.net/newOccurance", { ...post, MadeBy, dateTime });
+      const responsePost = await axios.post("http://localhost:3000/newOccurance", { ...post, MadeBy, dateTime });
       console.log(responsePost);
 
       if (StaffIds.length !== 0) {
         console.log("Callled");
-        const updateStaffResponse = await axios.put('https://srv496943145.host.ultaserver.net/updateGarrisoninServiceNew', { dataArray: StaffIds });
+        const updateStaffResponse = await axios.put('http://localhost:3000/updateGarrisoninServiceNew', { dataArray: StaffIds });
         console.log("update staff api working", updateStaffResponse);
         console.log("update staff api working");
 
@@ -413,14 +413,14 @@ const ServiceNew = () => {
       }
 
 
-      // const responsePut = await axios.put(`https://srv496943145.host.ultaserver.net/updataGarrison/${GarrisonId}`);
+      // const responsePut = await axios.put(`http://localhost:3000/updataGarrison/${GarrisonId}`);
       // console.log(responsePut);
 
-      const responseGetGarrison = await axios.get("https://srv496943145.host.ultaserver.net/getGarrison");
+      const responseGetGarrison = await axios.get("http://localhost:3000/getGarrison");
       setNewGarrison(responseGetGarrison.data);
       console.log("Garrison", responseGetGarrison.data);
 
-      const responseGetGarrisonFalse = await axios.get("https://srv496943145.host.ultaserver.net/getGarrisonFalse");
+      const responseGetGarrisonFalse = await axios.get("http://localhost:3000/getGarrisonFalse");
       setGarrsionIdFalse(responseGetGarrisonFalse.data);
       console.log("GarrisonFalse", responseGetGarrisonFalse.data);
     } catch (error) {
@@ -464,7 +464,7 @@ const ServiceNew = () => {
   };
 
   const occurenceUpdate = async () => {
-    axios.put(`https://srv496943145.host.ultaserver.net/updateOccurenceInServices`, { post, OccurenceIdForUpdate })
+    axios.put(`http://localhost:3000/updateOccurenceInServices`, { post, OccurenceIdForUpdate })
       .then((res) => {
         console.log("data updated", res);
       })
@@ -475,7 +475,7 @@ const ServiceNew = () => {
 
       if (StaffIds.length !== 0) {
         console.log("Callled");
-        const updateStaffResponse = await axios.put('https://srv496943145.host.ultaserver.net/updateGarrisoninServiceNew', { dataArray: StaffIds });
+        const updateStaffResponse = await axios.put('http://localhost:3000/updateGarrisoninServiceNew', { dataArray: StaffIds });
         console.log("update staff api working", updateStaffResponse);
         console.log("update staff api working");
 
@@ -506,14 +506,14 @@ const ServiceNew = () => {
       }
 
 
-      // const responsePut = await axios.put(`https://srv496943145.host.ultaserver.net/updataGarrison/${GarrisonId}`);
+      // const responsePut = await axios.put(`http://localhost:3000/updataGarrison/${GarrisonId}`);
       // console.log(responsePut);
 
-      const responseGetGarrison = await axios.get("https://srv496943145.host.ultaserver.net/getGarrison");
+      const responseGetGarrison = await axios.get("http://localhost:3000/getGarrison");
       setNewGarrison(responseGetGarrison.data);
       console.log("Garrison", responseGetGarrison.data);
 
-      const responseGetGarrisonFalse = await axios.get("https://srv496943145.host.ultaserver.net/getGarrisonFalse");
+      const responseGetGarrisonFalse = await axios.get("http://localhost:3000/getGarrisonFalse");
       setGarrsionIdFalse(responseGetGarrisonFalse.data);
       console.log("GarrisonFalse", responseGetGarrisonFalse.data);
     } catch (error) {

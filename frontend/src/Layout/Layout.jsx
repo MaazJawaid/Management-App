@@ -15,18 +15,7 @@ const Layout = ({onLogout}) => {
       setIsOpen(data)
       console.log("data passed from child is parent is " , data)
   }
-  // useEffect(() => {
-  //   const handleKeyDown = (event) => {
-  //     if (event.key === 'Backspace') {
-  //       event.preventDefault(); // Prevent default backspace behavior
-  //     }
-  //   };
-  //   window.addEventListener('keydown', handleKeyDown);
-  //   return () => {
-  //     window.removeEventListener('keydown', handleKeyDown);
-  //   };
-  // }, []);
-
+  
   useEffect(()=>{
     const token = localStorage.getItem("token")
     if(token){

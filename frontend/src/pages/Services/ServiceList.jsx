@@ -15,7 +15,7 @@ const ServiceList = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("https://srv496943145.host.ultaserver.net/getnewoccuranceAll")
+      .get("http://localhost:3000/getnewoccuranceAll")
       .then((response) => {
         // Set the fetched data in state
         setData(response.data);

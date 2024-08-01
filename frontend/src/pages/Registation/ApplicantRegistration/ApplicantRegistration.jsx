@@ -22,7 +22,7 @@ const ApplicantRegistration = () => {
     event.preventDefault();
     if (validateForm()) {
       axios
-        .post('https://srv496943145.host.ultaserver.net/postApplicant', post)
+        .post('http://localhost:3000/postApplicant', post)
         .then(response => {
           setSubmitStatus('success');
           setTimeout(() => {
