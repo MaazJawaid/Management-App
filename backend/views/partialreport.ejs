@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            color: #343a40;
+        }
+
+        .section {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .border-right {
+            border-right: 1px solid #dee2e6;
+        }
+
+        .border-left {
+            border-left: 1px solid #dee2e6;
+        }
+
+        hr {
+            border-top: 1px solid #dee2e6;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        li strong {
+            color: #007bff;
+        }
+
+        .horizontal-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .horizontal-list>div {
+            flex: 0 0 50%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-right: 1px solid #dee2e6;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .horizontal-list>div:nth-child(odd) {
+            border-right: none;
+        }
+
+        .horizontal-list>div:nth-child(even) {
+            border-left: 1px solid #dee2e6;
+        }
+
+        .horizontal-list hr {
+            border-top: 1px solid #dee2e6;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .download-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .new-button {
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .margin-t {
+            margin-top: 10px;
+        }
+
+        .margin-b {
+            margin-bottom: 20px;
+        }
+
+        .do-it {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .down {
+            display: flex;
+            justify-content: end;
+            font-weight: 600;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+
+
+<body>
+    <div class="container margin-t">
+        <div class="new down">
+        </div>
+        <h1 class="text-center margin-b">Relatório</h1>
+        <hr>
+        <div class="row">
+            <div class="col-md-6 occurrence-details section border-right">
+                <h2>Detalhes da Ocorrência</h2>
+                <ul>
+                    <li><strong>Telefone:</strong>
+                        <%= occurrence.phone %>
+                    </li>
+                    <li><strong>Requerente:</strong>
+                        <%= occurrence.Applicant %>
+                    </li>
+                    <li><strong>Rua:</strong>
+                        <%= occurrence.Street %>
+                    </li>
+                    <li><strong>CPF:</strong>
+                        <%= occurrence.CPF %>
+                    </li>
+                    <li><strong>CEP:</strong>
+                        <%= occurrence.CEP %>
+                    </li>
+                    <li><strong>Bairro:</strong>
+                        <%= occurrence.Neighbourhood %>
+                    </li>
+                    <li><strong>Cidade:</strong>
+                        <%= occurrence.City %>
+                    </li>
+                    <li><strong>Referência:</strong>
+                        <%= occurrence.Reference %>
+                    </li>
+                    <!-- <li><strong>Descrição:</strong>
+                        <%= occurrence.Description %>
+                    </li>
+                    <li><strong>Solicitação:</strong>
+                        <%= occurrence.Request %>
+                    </li> -->
+                    <%- changingVar %>
+                </ul>
+            </div>
+            <div class="col-md-6 garison-details section border-left">
+                <h2>Guarnição</h2>
+                <ul>
+                    <% occurrence.av_garison.forEach(function(garison, index) { %>
+                        <% if (index> 0) { %>
+                            <hr>
+                            <% } %>
+                                <li><strong>Nome do Batalhão:</strong>
+                                    <%= garison.garissonName %>
+                                </li>
+                                <li><strong>Tempo de Despacho:</strong>
+                                    <%= garison.DispachTime==='Notarrived' ? 'Não chegou' : new
+                                        Date(garison.DispachTime).toLocaleTimeString() %>
+                                </li>
+                                <li><strong>Tempo de Chegada:</strong>
+                                    <%= garison.ArrivalTime==='Notarrived' ? 'Não chegou' : new
+                                        Date(garison.ArrivalTime).toLocaleTimeString() %>
+                                </li>
+                                <!-- <li><strong>Desabilitado:</strong>
+                                    <%= garison.disabled %>
+                                </li> -->
+                                <% }); %>
+                </ul>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row">
+            <div class="col-md-12 additional-info section">
+                <h2>Informações Adicionais</h2>
+                <ul>
+                    <li><strong>Número da Ocorrência:</strong>
+                        <%= occurrence.occurance_Number %>
+                    </li>
+                    <li><strong>Código da Ocorrência:</strong>
+                        <%= occurrence.occurance_Code %>
+                    </li>
+                    <li><strong>Status:</strong>
+                        <%= occurrence.Status %>
+                    </li>
+                    <li><strong>Tempo:</strong>
+                        <%= occurrence.Time==='Notarrived' ? 'Não chegou' : new
+                            Date(occurrence.Time).toLocaleTimeString() %>
+                    </li>
+                    <li><strong>Data:</strong>
+                        <%= new Date(occurrence.Time).toLocaleDateString() %>
+                    </li>
+                    <li><strong>Ocorencia Gerada Por:</strong>
+                        <%= occurrence.MadeBy %>
+                    </li>
+                    <li><strong>Data de Registro:</strong>
+                        <%= new Date(occurrence.registrationDate).toLocaleDateString() %>
+                    </li>
+                    <!-- <li><strong>Despachado Por:</strong>
+                        <%= occurrence.DispatchBy %>
+                    </li> -->
+                    <li><strong>Fechado Por:</strong>
+                        <%= occurrence.ClosedBy %>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

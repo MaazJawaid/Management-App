@@ -1,0 +1,833 @@
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { v4 as uuidv4 } from 'uuid';
+import { jwtDecode } from 'jwt-decode'
+import ClearAllButton from "../../components/ClearAllButton/ClearAllButton";
+import './style.css'
+
+const ServiceNew = () => {
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [data, setData] = useState(0);
+  const [countOcc, setcountOcc] = useState(0);
+  const [Garrison, setNewGarrison] = useState([]);
+  const [GarrisonId, setGarrsionId] = useState('');
+  const [GarrisonValue, setGarrsionValue] = useState([]);
+  const [GarrisonIdFalse, setGarrsionIdFalse] = useState([]);
+  const [StaffIds, setStaffIds] = useState([]);
+  const [checkedBoxes, setCheckedBoxes] = useState({}); // State to keep track of checked checkboxes
+  const [OccurenceNumberSaved, setOccurenceNumberSaved] = useState(0);
+  const [OccurenceIdForUpdate, setOccurenceIdForUpdate] = useState("");
+  const checkboxRef = useRef(null);
+
+  function getformValues() {
+    const storedValue = localStorage.getItem("data");
+    if (!storedValue) return {
+      phone: "",
+      Applicant: "",
+      Street: "",
+      CPF: "",
+      CEP: "",
+      Neighbourhood: "",
+      City: "",
+      Reference: "",
+      Description: "",
+      Request: "",
+      av_garison: [],
+      occurance_Code: 0,
+      occurance_Number: 0,
+      Time: "",
+      ArrivalTime: "",
+      MadeBy: "",
+    }
+    return JSON.parse(storedValue)
+  }
+
+
+  const [post, setPost] = useState(getformValues);
+
+  useEffect(() => {
+    localStorage.setItem("data", JSON.stringify(post))
+  }, [post])
+
+
+  // Function to save checkbox state to local storage
+  const saveCheckedBoxesToLocalStorage = (checkedBoxes) => {
+    localStorage.setItem("checkedBoxes", JSON.stringify(checkedBoxes));
+  };
+
+  // Function to load checkbox state from local storage
+  const loadCheckedBoxesFromLocalStorage = () => {
+    const storedCheckedBoxes = JSON.parse(localStorage.getItem("checkedBoxes"));
+    if (storedCheckedBoxes) {
+      setCheckedBoxes(storedCheckedBoxes);
+    }
+  };
+
+  useEffect(() => {
+    loadCheckedBoxesFromLocalStorage(); // Load checkbox state from local storage on component mount
+  }, []);
+
+  useEffect(() => {
+    // Fetch data when the component mounts
+    axios
+      .get("https://srv496943145.host.ultaserver.net/getoccurance")
+      .then((response) => {
+        // Set the fetched data in state
+        setData(response.data);
+        console.log(response.data.Code);
+      })
+      .catch((error) => {
+        // Handle errors, if any
+        console.error("Error fetching data:", error);
+      });
+
+    axios
+      .get("https://srv496943145.host.ultaserver.net/getnewoccurance")
+      .then((response) => {
+        // Set the fetched data in state
+        setcountOcc(response.data);
+        console.log("Code", response.occurance_Code);
+        console.log("Number", response.occurance_Number);
+      })
+      .catch((error) => {
+        // Handle errors, if any
+        console.error("Error fetching data:", error);
+      });
+
+    axios
+      .get("https://srv496943145.host.ultaserver.net/getGarrison")
+      .then((response) => {
+        setNewGarrison(response.data)
+        console.log("Garrson", response.data)
+        // Set the fetched data in state
+
+
+      })
+      .catch((error) => {
+        // Handle errors, if any
+        console.error("Error fetching data:", error);
+      });
+
+
+    axios
+      .get("https://srv496943145.host.ultaserver.net/getGarrisonFalse")
+      .then((response) => {
+        setGarrsionIdFalse(response.data)
+        console.log("GarrsonFalse", response.data)
+        // Set the fetched data in state
+
+
+      })
+      .catch((error) => {
+        // Handle errors, if any
+        console.error("Error fetching data:", error);
+      });
+
+
+  }, []);
+
+  const handleInput = (event) => {
+    const { id, checked, name, value, type } = event.target;
+
+    // Update GarrisonId based on the checked checkbox
+
+    if (checked && !StaffIds.includes(id)) {
+      // If checkbox is checked and ID is not already in staffId, add it
+      setStaffIds(prevIds => [...prevIds, id]);
+
+    } else if (!checked && StaffIds.includes(id)) {
+      // If checkbox is unchecked and ID is in staffId, remove it
+      setStaffIds(prevIds => prevIds.filter(item => item !== id));
+    }
+    if (type === "checkbox") {
+
+      setCheckedBoxes({ ...checkedBoxes, [id]: checked }); // Update checkbox state
+      saveCheckedBoxesToLocalStorage({ ...checkedBoxes, [id]: checked }); // Save checkbox state to local storage
+    }
+
+    if (checked) {
+      setGarrsionId(id);
+    } else if (id === GarrisonId) {
+      setGarrsionId(''); // Unset GarrisonId if the checkbox is unchecked
+    }
+    if (checked && name === "Status") localStorage.removeItem("checkedBoxes")
+
+
+    if (checked && name !== "Status") {
+      console.log("fisrt call ");
+      let obj = {
+        id: uuidv4(),
+        "garissonName": value,
+        garissonId: id,
+        DispachTime: new Date(),
+        ArrivalTime: "Notarrived",
+        disabled: false
+      }
+      setGarrsionValue((prevValues) => [...prevValues, obj]);
+      // setGarrsionValue((prevValues) => [...prevValues, value]);
+    } else {
+      console.log("second call ");
+      setGarrsionValue((prevValues) => prevValues.filter((item) => item.garissonName !== value));
+    }
+
+    // calling coocurence for autofilling( api )
+    if (name === "phone") {
+      axios.get(`https://srv496943145.host.ultaserver.net/getoccurencebyphonenumber/${value}`)
+        .then((res) => {
+          console.log("occ is ", res);
+          console.log("occurence number is s", res.data.occurance_Number)
+          setOccurenceNumberSaved(res.data.occurance_Number)
+          setOccurenceIdForUpdate(res.data._id)
+
+          if (res.data) {
+            setPost((prevState) => ({
+              ...prevState,
+              occurance_Code: res.data.occurance_Code,
+              CPF: res.data.CPF,
+              CEP: res.data.CEP,
+              Description: res.data.Description,
+              Request: res.data.Request,
+              Reference: res.data.Reference,
+              Applicant: res.data.Applicant,
+              Street: res.data.Street,
+              Neighbourhood: res.data.Neighbourhood,
+              City: res.data.City,
+            }));
+          }
+        }).catch((err) => {
+          setOccurenceNumberSaved(null)
+          setPost((prevState) => ({
+            ...prevState,
+            occurance_Code: "",
+            CEP: "",
+            CPF: "",
+            Description: "",
+            Request: "",
+            Reference: "",
+            Applicant: "",
+            Street: "",
+            Neighbourhood: "",
+            City: "",
+          }));
+        })
+    }
+
+
+    // calling zipcode(Street api )
+    if (name === "CEP") {
+      axios.get(`https://viacep.com.br/ws/${value}/json/`)
+        .then((res) => {
+          console.log("res.data", res.data)
+          if (res.data) {
+            setPost((prevState) => ({
+              ...prevState,
+              Street: res.data.logradouro,
+              Neighbourhood: res.data.bairro,
+              City: res.data.localidade
+            }));
+          }
+        }).catch((err) => {
+          setPost((prevState) => ({
+            ...prevState,
+            Street: "",
+            Neighbourhood: "",
+            City: ""
+          }));
+        })
+    }
+
+    setPost((prevState) => ({
+      ...prevState,
+      [name]: value,
+      av_garison: checked && name !== "Status" ? [...GarrisonValue, { id: uuidv4(), garissonName: value, DispachTime: new Date(), ArrivalTime: "Notarrived", garissonId: id, disabled: false }] : (name === "Status" && checked ? [] : GarrisonValue.filter((item) => item.garissonName !== value)),
+      Status: checked && name !== "Status" ? "0" : "1",
+      occurance_Number: OccurenceNumberSaved ? OccurenceNumberSaved : countOcc
+    }));
+
+    if (id === "vehicle3" && checked) {
+      // Disable Garrison radio buttons
+      setNewGarrison(Garrison.map(item => ({ ...item, disabled: true })));
+    } else if (name === "av_garison") {
+      // If a Garrison radio button is checked
+      // Enable all Garrison radio buttons
+      setNewGarrison(Garrison.map(item => ({ ...item, disabled: false })));
+    } if (id === "vehicle3" && !checked) {
+      // Disable Garrison radio buttons
+      setNewGarrison(Garrison.map(item => ({ ...item, disabled: false })));
+    }
+    console.log("garisson consolled ", Garrison)
+  };
+
+  console.log("valueGarisoin is ", GarrisonValue)
+  console.log("post value is ", post)
+
+  console.log([post])
+
+
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+
+    setPost((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    const saved = localStorage.getItem("data");
+
+    const initialValue = JSON.parse(saved);
+    console.log(initialValue);
+    return initialValue || "";
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    function validCPF(cpf) {
+      cpf = cpf.replace(/[^\d]+/g, '');
+      if (cpf === '') {
+        alert("O CPF está vazio.");
+        return false;
+      }
+
+      // Elimina CPFs inválidos conhecidos
+      if (cpf.length !== 11 ||
+        cpf === "00000000000" ||
+        cpf === "11111111111" ||
+        cpf === "22222222222" ||
+        cpf === "33333333333" ||
+        cpf === "44444444444" ||
+        cpf === "55555555555" ||
+        cpf === "66666666666" ||
+        cpf === "77777777777" ||
+        cpf === "88888888888" ||
+        cpf === "99999999999") {
+        alert("CPF inválido: Padrão de CPF inválido conhecido");
+        return false;
+      }
+
+      // Valida 1o dígito
+      let add = 0;
+      for (let i = 0; i < 9; i++) {
+        add += parseInt(cpf.charAt(i)) * (10 - i);
+      }
+      let rev = 11 - (add % 11);
+      if (rev === 10 || rev === 11) rev = 0;
+      if (rev !== parseInt(cpf.charAt(9))) {
+        alert("CPF inválido");
+        return false;
+      }
+
+      // Valida 2o dígito
+      add = 0;
+      for (let i = 0; i < 10; i++) {
+        add += parseInt(cpf.charAt(i)) * (11 - i);
+      }
+      rev = 11 - (add % 11);
+      if (rev === 10 || rev === 11) rev = 0;
+      if (rev !== parseInt(cpf.charAt(10))) {
+        alert("CPF inválido");
+        return false;
+      }
+
+      return true;
+    }
+
+    if (post.CPF.trim() === '') {
+      console.log('empty')
+    } else {
+      if (!validCPF(post.CPF)) {
+        return false;
+      }
+    }
+
+    const checkifgarissonSelectedornot = (av_garison) => {
+      if (av_garison.length === 0) {
+        alert("Selecione a guarnição ou coloque em espera");
+        return false;
+      }
+      return true;
+    }
+
+    try {
+      const token = localStorage.getItem("token")
+      const MadeBy = jwtDecode(token).username
+
+      const currentDate = new Date();
+
+      const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+    
+      const timeFormatter = new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+    
+      const formattedDate = dateFormatter.format(currentDate);
+      const formattedTime = timeFormatter.format(currentDate);
+    
+      const dateTime = `${formattedDate} at ${formattedTime}`;
+      
+      const responsePost = await axios.post("https://srv496943145.host.ultaserver.net/newOccurance", { ...post, MadeBy, dateTime });
+      console.log(responsePost);
+
+      if (StaffIds.length !== 0) {
+        console.log("Callled");
+        const updateStaffResponse = await axios.put('https://srv496943145.host.ultaserver.net/updateGarrisoninServiceNew', { dataArray: StaffIds });
+        console.log("update staff api working", updateStaffResponse);
+        console.log("update staff api working");
+
+        // Assuming the response contains the updated post object
+        console.log("Code", post.occurance_Code);
+        console.log("Number", post.occurance_Number);
+        setGarrsionValue([]);
+        setSubmitStatus("success");
+        setTimeout(() => {
+          setSubmitStatus(null);
+        }, 1000);
+        setPost({
+          phone: "",
+          Applicant: "",
+          CEP: "",
+          Street: "",
+          CPF: "",
+          Neighbourhood: "",
+          City: "",
+          Reference: "",
+          Description: "",
+          Request: "",
+          av_garison: [null],
+          occurance_Number: "", // Clearing the fields
+          occurance_Code: "",
+        });
+        localStorage.removeItem("checkedBoxes")
+
+        console.log(checkboxRef.current.checked, 'abc')
+
+      }
+
+
+      // const responsePut = await axios.put(`https://srv496943145.host.ultaserver.net/updataGarrison/${GarrisonId}`);
+      // console.log(responsePut);
+
+      const responseGetGarrison = await axios.get("https://srv496943145.host.ultaserver.net/getGarrison");
+      setNewGarrison(responseGetGarrison.data);
+      console.log("Garrison", responseGetGarrison.data);
+
+      const responseGetGarrisonFalse = await axios.get("https://srv496943145.host.ultaserver.net/getGarrisonFalse");
+      setGarrsionIdFalse(responseGetGarrisonFalse.data);
+      console.log("GarrisonFalse", responseGetGarrisonFalse.data);
+    } catch (error) {
+      setSubmitStatus("error");
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 3000);
+      console.error("Error:", error);
+    }
+
+    setGarrsionValue([]);
+    setSubmitStatus("success");
+    setTimeout(() => {
+      setSubmitStatus(null);
+    }, 1000);
+    setPost({
+      phone: "",
+      Applicant: "",
+      Street: "",
+      Neighbourhood: "",
+      CPF: "",
+      CEP: "",
+      City: "",
+      Reference: "",
+      Description: "",
+      Request: "",
+      av_garison: [null],
+      occurance_Number: "", // Clearing the fields
+      occurance_Code: "",
+    });
+    setCheckedBoxes({});
+    setGarrsionValue([]);
+    setStaffIds([]);
+    setGarrsionId('');
+    localStorage.removeItem("checkedBoxes");
+
+    console.log(checkboxRef.current.checked, 'abc')
+    if (checkboxRef.current) {
+      checkboxRef.current.checked = false;
+    }
+  };
+
+  const occurenceUpdate = async () => {
+    axios.put(`https://srv496943145.host.ultaserver.net/updateOccurenceInServices`, { post, OccurenceIdForUpdate })
+      .then((res) => {
+        console.log("data updated", res);
+      })
+      .catch((err) => {
+        console.log(console.log(err));
+      })
+    try {
+
+      if (StaffIds.length !== 0) {
+        console.log("Callled");
+        const updateStaffResponse = await axios.put('https://srv496943145.host.ultaserver.net/updateGarrisoninServiceNew', { dataArray: StaffIds });
+        console.log("update staff api working", updateStaffResponse);
+        console.log("update staff api working");
+
+        // Assuming the response contains the updated post object
+        console.log("Code", post.occurance_Code);
+        console.log("Number", post.occurance_Number);
+        setGarrsionValue([]);
+        setSubmitStatus("success");
+        setTimeout(() => {
+          setSubmitStatus(null);
+        }, 1000);
+        setPost({
+          phone: "",
+          Applicant: "",
+          Street: "",
+          CPF: "",
+          Neighbourhood: "",
+          CEP: "",
+          City: "",
+          Reference: "",
+          Description: "",
+          Request: "",
+          av_garison: [null],
+          occurance_Number: "", // Clearing the fields
+          occurance_Code: "",
+        });
+        localStorage.removeItem("checkedBoxes")
+      }
+
+
+      // const responsePut = await axios.put(`https://srv496943145.host.ultaserver.net/updataGarrison/${GarrisonId}`);
+      // console.log(responsePut);
+
+      const responseGetGarrison = await axios.get("https://srv496943145.host.ultaserver.net/getGarrison");
+      setNewGarrison(responseGetGarrison.data);
+      console.log("Garrison", responseGetGarrison.data);
+
+      const responseGetGarrisonFalse = await axios.get("https://srv496943145.host.ultaserver.net/getGarrisonFalse");
+      setGarrsionIdFalse(responseGetGarrisonFalse.data);
+      console.log("GarrisonFalse", responseGetGarrisonFalse.data);
+    } catch (error) {
+      setSubmitStatus("error");
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 3000);
+      console.error("Error:", error);
+    }
+
+    setGarrsionValue([]);
+    setSubmitStatus("Edited");
+    setTimeout(() => {
+      setSubmitStatus(null);
+    }, 1000);
+    setPost({
+      phone: "",
+      Applicant: "",
+      Street: "",
+      CPF: "",
+      Neighbourhood: "",
+      City: "",
+      CEP: "",
+      Reference: "",
+      Description: "",
+      Request: "",
+      av_garison: [null],
+      occurance_Number: "", // Clearing the fields
+      occurance_Code: "",
+    });
+    if (checkboxRef.current) {
+      checkboxRef.current.checked = false;
+    }
+
+  }
+
+  const clearFeilds = () => {
+
+    const inputs = document.querySelectorAll('input[type="checkbox"]');
+    inputs.forEach(input => {
+      setCheckedBoxes(false)
+    });
+    setPost({
+      phone: "",
+      Applicant: "",
+      Street: "",
+      CEP: "",
+      CPF: "",
+      Neighbourhood: "",
+      City: "",
+      Reference: "",
+      Description: "",
+      Request: "",
+      av_garison: [null],
+      occurance_Number: "", // Clearing the fields
+      occurance_Code: "",
+    });
+    localStorage.removeItem("checkedBoxes")
+    if (checkboxRef.current) {
+      checkboxRef.current.checked = false;
+      setNewGarrison(Garrison.map(item => ({ ...item, disabled: false })));
+    }
+  }
+
+
+  return (
+    <>
+      {submitStatus === 'success' && (
+        <div className="alert alert-success" style={{ width: '20%' }} role="alert">
+          Submitted successfully
+        </div>
+      )}
+      {submitStatus === 'error' && (
+        <div className="alert alert-danger" style={{ width: '20%' }} role="alert">
+          An error occurred
+        </div>
+      )}
+      {submitStatus === 'Edited' && (
+        <div className="alert alert-danger" style={{ width: '20%' }} role="alert">
+          updated successfully
+        </div>
+      )}
+      <ClearAllButton clearField={clearFeilds} />
+      <div className="custom-container">
+        <div className="container">
+          <form onSubmit={handleSubmit}>
+            <div className="form form_card row my-2">
+              <div class="input-group mb-3 col-md-4 col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="phone"
+                  placeholder="Phona"
+                  value={post.phone}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+
+              <div class="input-group mb-3 col-md-4  col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Solicitante"
+                  value={post.Applicant}
+                  onChange={handleInput}
+                  name="Applicant"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group mb-3 col-md-4  col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="CPF"
+                  placeholder="CPF"
+                  value={post.CPF}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group mb-3 col-md-4 col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="CEP"
+                  placeholder="CEP"
+                  value={post.CEP}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group mb-3 col-md-4 col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="Street"
+                  placeholder="Rua"
+                  value={post.Street}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+
+              <div class="input-group mb-3 col-md-4  col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="Neighbourhood"
+                  placeholder="Bairro"
+                  value={post.Neighbourhood}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group mb-3 col-md-4 col-sm-12">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="City"
+                  placeholder="Cidade"
+                  value={post.City}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group mb-3 col-md-4 col-sm-12 ">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Referência"
+                  value={post.Reference}
+                  onChange={handleInput}
+                  name="Reference"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+            </div>
+
+            <div className="request_card my-4">
+              <div className="infocen garison_2 vertical-view">
+                <span >
+                  <span>Numero de Ocorrência: </span>
+                  <span ><strong>{OccurenceNumberSaved ? OccurenceNumberSaved : countOcc}</strong> </span>
+                </span>
+
+
+                <select
+                  className="btn border dropdown-toggle dropdown p-0"
+                  role="button"
+                  name="occurance_Code"
+                  value={post.occurance_Code}
+                  onChange={handleChange}
+                >
+                  <option value="">Cód. Atendimento</option>
+                  {data &&
+                    data.map((v, i) => (
+                      <option key={i} value={v.Code}>
+                        {v.Code}
+                      </option>
+                    ))}
+                </select>
+
+
+
+              </div>
+              <div class="input-group request-group mb-3 mt-3">
+                <textarea
+                  class="form-control"
+                  name="Request"
+                  placeholder="Solicitação"
+                  value={post.Request}
+                  onChange={handleInput}
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+            </div>
+
+            <div className="request_card py-5 my-4 request_card_2">
+              <div class="input-group request-group mb-3 mt-3">
+                <textarea
+                  class="form-control"
+                  placeholder="Observaçã"
+                  value={post.Description}
+                  onChange={handleInput}
+                  name="Description"
+                  aria-label="Username"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+            </div>
+
+            <div style={{ fontSize: "1.5rem", fontWeight: "700", color: "red" }}>
+              <input
+                type="checkbox"
+                id="vehicle3"
+                name="Status"
+                value="1"
+                onChange={handleInput}
+                ref={checkboxRef}
+              />
+              <label for="vehicle3" className="ml-2">
+                {" "}
+                Em Espera
+              </label>
+            </div>
+
+
+
+            <div className=" row garison my-2">
+              <div className=" col-md-5 col-sm-12 avalible_garison ">
+                <h3 className="text-center">Garnição Disponível</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginBottom: '10px', marginTop: '10px' }}>
+                  {Garrison.map((v, i) => {
+                    return (
+                      <div>
+                        <input
+                          type="checkbox"
+                          id={v._id}
+                          name="av_garison"
+                          // value={v.VehcleName + v.StaffName} //changes
+                          value={v.Av_garison}
+                          onChange={handleInput}
+                          disabled={v.disabled}
+                          checked={checkedBoxes[v._id]}
+                        />
+                        <label for="vehicle1" className="ml-2">
+                          {v.StaffName + ' ' + v.VehcleName}
+                        </label>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className=" col-md-5 col-sm-12 unavalible_garison ml-5 mar-pad">
+                <h3 className="text-center">Garnição Indisponível</h3>
+
+
+                <ul>
+                  {GarrisonIdFalse.map((v, i) => {
+                    return (
+                      <>
+                        <li>   {v.StaffName + v.VehcleName}</li>
+                      </>
+
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-center ">
+              <input class="btn btn-primary p-3 m-3 w-50 text-center" value="Enviar" type="submit" />
+              <input
+                disabled={OccurenceNumberSaved ? false : true}
+                onClick={occurenceUpdate}
+                class="btn btn-primary p-3 m-3 w-50 text-center" value="Confirmar Edição" type="button" />
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default ServiceNew;

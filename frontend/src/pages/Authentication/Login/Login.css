@@ -1,0 +1,77 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 15px;
+}
+
+.titleContainer {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.inputContainer {
+  width: 100%;
+  max-width: 400px;
+}
+
+.inputContainer > .errorLabel {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.inputBox {
+  width: 100%;
+  height: 3rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid grey;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.inputButton {
+  width: 100%;
+  height: 3rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.snackbarContainer {
+  width: 100%;
+  max-width: 400px;
+  position: fixed;
+  bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .titleContainer {
+    font-size: 3rem;
+  }
+
+  .inputBox,
+  .inputButton {
+    height: 4rem;
+  }
+
+  .inputContainer > .errorLabel {
+    font-size: 1rem;
+  }
+}

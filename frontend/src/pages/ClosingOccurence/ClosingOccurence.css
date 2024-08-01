@@ -1,0 +1,43 @@
+@media (max-width: 750px) {
+  .example-class {
+    margin-top: -60px !important;
+  }
+
+  .vertical_disp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button-width {
+    width: fit-content;
+  }
+
+  .vertical-space {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+  
+  .spacing {
+    margin-top: 10px !important;
+  }
+
+  .full_width {
+  min-width: 70vw;
+  }
+
+  .take_left {
+    margin-left: -13px;
+  }
+}
+
+@media (min-width: 751px) {
+  .vertical_disp {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .take_up {
+    margin-top: -60px;
+  }
+}

@@ -1,0 +1,24 @@
+// DataNotFoundPage.scss
+
+.data-not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 84vh ;
+    background-color: inherit;
+  
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+  
+    p {
+      font-size: 1.5rem;
+      color: #666;
+      text-align: center;
+      max-width: 400px;
+    }
+  }
+  

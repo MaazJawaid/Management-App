@@ -1,0 +1,282 @@
+.overflow {
+    overflow: auto;
+}
+
+.Searchbar {
+    width: 100%;
+    // border: 2px solid red;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 150px;
+
+
+    label strong {
+        font-size: 20px;
+    }
+
+    .dateandtime {
+        display: flex;
+        justify-content: space-around;
+
+        .starting-date-time,
+        .ending-date-time {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    }
+
+}
+
+.street-and-city {
+    display: flex;
+    justify-content: space-around;
+
+    >div {
+
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+
+
+
+    }
+}
+
+.result {
+    width: 100%;
+    min-height: 40px;
+    border-radius: 10px;
+
+    // border: 2px solid red
+
+}
+
+.result-content-wrapper {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.result-content {
+    background-color: white;
+    border-radius: 10px;
+    min-height: auto;
+    width: 100%;
+    // display: flex;
+    // justify-content: space-around;
+    // align-items: center;
+    margin-top: 1rem;
+    // min-height:200px;
+    // gap: 20px;
+
+    >div {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        height: 100%;
+        flex-direction: column;
+
+    }
+
+    table th {
+        border: 1px solid #ccc;
+        padding: 8px;
+        white-space: nowrap;
+        /* Prevent text wrapping */
+        // overflow: auto; /* Enable overflow scrolling */
+        max-width: 40px;
+        /* Set a maximum width to trigger overflow */
+    }
+
+    table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        white-space: nowrap;
+        /* Prevent text wrapping */
+        overflow: auto;
+        /* Enable overflow scrolling */
+        max-width: 40px;
+        /* Set a maximum width to trigger overflow */
+    }
+
+    //    table td{
+
+    //    }
+    table td {
+        scrollbar-width: thin;
+        /* For Firefox */
+        scrollbar-color: #ccc #f0f0f0;
+        /* Track and thumb color */
+    }
+
+    table td::-webkit-scrollbar {
+        width: 8px;
+        /* Width of the scrollbar */
+    }
+
+    table td::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        /* Track color */
+    }
+
+    table td::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+        /* Thumb color */
+        border-radius: 4px;
+        /* Rounded corners for the thumb */
+    }
+
+
+    //    >div{
+    //    display: flex;
+
+    //    }
+    .download-btn {
+        min-height: 50px;
+        width: 10%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #007bff;
+        /* Primary blue color */
+        color: #fff;
+        /* White color for the text/icon */
+        font-size: 24px;
+        /* Increase font size */
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 20px 40px;
+        /* Increase padding */
+        border: none;
+        border-radius: 12px;
+        /* Increase border radius */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+
+        &:hover {
+            background-color: #0056b3;
+            /* Darker blue color on hover */
+            transform: translateY(-2px);
+            /* Add a slight lift effect */
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        .MuiSvgIcon-root {
+            margin-right: 12px;
+            /* Add space between icon and text */
+            font-size: 36px;
+            /* Increase the size of the icon */
+        }
+    }
+
+    .standout-row {
+        background-color: grey;
+        /* Choose a standout color (e.g., orange) */
+        color: white;
+        /* Set text color to white for better contrast */
+        font-weight: bold;
+        /* Make text bold */
+    }
+
+
+
+
+}
+
+
+@media (max-width :660px) {
+    .Searchbar .dateandtime {
+        display: flex;
+        // justify-content: space-around;
+        flex-direction: column;
+        width: 100% !important;
+
+        .starting-date-time,
+        .ending-date-time {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0px;
+            margin-top: 2px;
+            width: 100%;
+
+            .dateandtime {
+                width: 100%;
+            }
+        }
+    }
+
+    .Searchbar .street-and-city {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+
+        >div {
+
+            display: flex;
+            gap: 0px;
+            flex-direction: column;
+            align-items: start;
+            width: 100%;
+
+        }
+    }
+
+    .search-btn {
+        height: 50px;
+        margin: 30px 60px;
+    }
+
+    .result-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        >div {
+            width: 100%;
+
+            table {
+                display: flex;
+
+                th,
+                td {
+                    max-width: 100%;
+                }
+
+                thead {
+                    width: 30%;
+                }
+
+                tbody {
+                    width: 70%;
+                }
+            }
+
+            table tr {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                // position: absolute;
+            }
+        }
+
+        .download-btn {
+            width: 60%;
+            margin-bottom: 20px;
+        }
+    }
+
+}
+
+@media only screen and (max-width:991px) and (min-width: 768px) {
+    .report-reponsive-ipad {
+        width: 150% !important;
+        margin-left: 0vh;
+        padding-top: 5px;
+    }
+}

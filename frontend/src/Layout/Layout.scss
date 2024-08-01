@@ -1,0 +1,99 @@
+.layout {
+    display: flex;
+    height: 100vh;
+
+    .main-layout {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+        background-color: #fafafa;
+
+        .menu-icon {
+            div {
+                width: 35px;
+                height: 5px;
+                background-color: black;
+                margin: 6px 0;
+                display: none;
+            }
+        }
+    }
+
+    .aside-layout {
+
+        height: 100%;
+        width: 20%;
+        text-align: center;
+        background-color: #fff;
+        overflow: auto;
+        transition: width 0.3s ease-in-out;
+    }
+    .sidebar--open {
+        // width: 250px;
+        transition: width 0.3s ease;
+        display: block;
+      }
+}
+
+// // Responsiveness
+// @media (max-width:1248px) {
+//     .aside-layout {
+//         position: fixed;
+//         // transition: width 0.3s ease;
+//         transition: max-height 0.3s ease-out;
+//         z-index: 11;
+//         top: 0;
+//         display: none;
+//     }
+
+//     .layout .main-layout .menu-icon{
+//         div{
+//             display: block;
+//         }
+//     }
+// }
+
+// // Responsiveness
+// @media (max-width:450px) {
+//     .layout .aside-layout {
+//         width: 100%;
+//     }
+
+// }
+// @media (max-width:500px ) {
+//     .layout .aside-layout {
+//         width: 50%;
+//     }
+
+// }
+
+
+
+// Responsiveness
+@media (max-width: 1165px) {
+    .aside-layout {
+        position: fixed;
+        transition: max-height 0.3s ease-out;
+        z-index: 11;
+        top: 0;
+        display: none;
+    }
+
+    .layout .main-layout .menu-icon div {
+        display: block;
+    }
+}
+
+// Adjust sidebar width for smaller screens
+@media (max-width: 500px) {
+    .layout .aside-layout {
+        width: 100%;
+    }
+}
+
+@media (min-width: 501px) and (max-width: 800px) {
+    .layout .aside-layout {
+        width: 50%;
+    }
+}   

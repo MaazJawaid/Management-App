@@ -1,0 +1,56 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  
+  .occurrence-box {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffff;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 4px 4px 8px #676767;
+    border-radius: 15px;
+  }
+  
+  @media only screen and (max-width: 1200px) {
+    .container {
+      padding: 15px;
+    }
+  }
+  
+  @media only screen and (max-width: 992px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .occurrence-box {
+      padding: 15px;
+    }
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .occurrence-box {
+      padding: 10px;
+    }
+  }
+  
+  @media only screen and (max-width: 576px) {
+    .container {
+      padding: 5px;
+    }
+  
+    .occurrence-box {
+      padding: 10px;
+    }
+  }
+  

@@ -1,0 +1,41 @@
+.search-bar-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  padding: 20px;
+  padding-right: 20px;
+
+  @media (min-width: 768px) {
+    width: auto;
+    max-width: 300px;
+    border-radius: 5px;
+  }
+
+  .input-group {
+    @media (min-width: 768px) {
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .form-control {
+      border: none;
+      outline: none;
+      @media (min-width: 768px) {
+        border-radius: 5px 0 0 5px;
+      }
+    }
+
+    .input-group-append {
+      .btn {
+        @media (min-width: 768px) {
+          border-radius: 0 5px 5px 0;
+        }
+      }
+    }
+  }
+
+  &.focused {
+    backdrop-filter: blur(8px); // Adjust the blur intensity as needed
+  }
+}
