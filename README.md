@@ -1,5 +1,5 @@
 # Vehicle Incident and Garrison Management System
-Welcome to the Vehicle Incident and Garrison Management System—a cutting-edge, full-stack MERN solution designed to elevate incident management and vehicle deployment efficiency for companies in Brazil. This system provides a seamless platform for tracking incidents, managing garrison assignments, and generating comprehensive reports with advanced automation features.
+Welcome to the Vehicle Incident and Garrison Management System—a cutting-edge, full-stack (Responsive) MERN solution designed to elevate incident management and vehicle deployment efficiency for companies in Brazil. This system provides a seamless platform for tracking incidents, managing garrison assignments, and generating comprehensive reports with advanced automation features.
 
 Key Features:
 
@@ -49,3 +49,16 @@ Day.js: Provides lightweight and efficient date and time manipulation capabiliti
 
 File-Saver: Enables the generation and saving of files, including PDFs, directly from the browser.
 Our Vehicle Incident and Garrison Management System leverages these advanced technologies and libraries to deliver a robust, scalable, and user-friendly solution. Enhance your operational efficiency and gain real-time insights with our state-of-the-art platform. Explore the possibilities today and transform your incident and vehicle management processes.
+
+
+## 📂 How to Get Started
+
+1. **Clone a Repository**:
+
+2. **Install Dependencies**:
+   - For the backend: `npm install`
+   - For the frontend: `npm install`
+
+3. **Run the Application**:
+   - Backend: `npx nodemon index.js`
+   - Frontend: `npm run dev`
