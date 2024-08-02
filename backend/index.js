@@ -29,14 +29,17 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const uri = "mongodb://localhost:27017/";
-mongoose.connect(uri, { dbName: 'VehicleMng', useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("Connected to MongoDB Atlas");
-  })
-  .catch((error) => {
-    console.error("Error connecting to MongoDB Atlas:", error);
-  });
+// const uri = "mongodb://localhost:27017/";
+// mongoose.connect(uri, { dbName: 'VehicleMng', useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => {
+//     console.log("Connected to MongoDB Atlas");
+//   })
+//   .catch((error) => {
+//     console.error("Error connecting to MongoDB Atlas:", error);
+//   });
+
+const uri = "mongodb+srv://maazk3611:MWHuY3L0IcmFppYG@cluster0.vpbjarw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+mongoose.connect(uri, { dbName: 'VehicleMng'})
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server Is Running");

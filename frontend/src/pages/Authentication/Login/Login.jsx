@@ -91,51 +91,114 @@ const Login = ({ onLoginSuccess }) => {
     }
   };
 
+  const containerStyle = {
+    fontFamily: 'Arial, sans-serif',
+    padding: '20px',
+    border: '1px solid #ccc',
+    borderRadius: '8px',
+    backgroundColor: '#ffffff',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+    maxWidth: '400px',
+    height: 'fit-content'
+  };
+
+  const sectionStyle = {
+    marginBottom: '16px',
+    padding: '10px',
+    borderRadius: '4px',
+    backgroundColor: '#f7f7f7',
+    border: '1px solid #e0e0e0'
+  };
+
+  const headerStyle = {
+    marginBottom: '8px',
+    fontWeight: '600',
+    color: '#333',
+    fontSize: '16px'
+  };
+
+  const infoStyle = {
+    color: '#555',
+    fontSize: '14px',
+    lineHeight: '1.6',
+  };
+
+  const regardsStyle = {
+    fontStyle: 'italic',
+    color: '#333',
+    fontSize: '14px'
+  };
+
   return (
     <div className={"mainContainer"}>
       <div className={"titleContainer"}>
         <div>Conecte-se</div>
       </div>
-      <br />
-      <div className={"inputContainer"}>
-        <input
-          value={username}
-          placeholder="Nome de usuário"
-          onChange={(ev) => setUsername(ev.target.value)}
-          className={"inputBox"}
-        />
-        <label className="errorLabel">{userNameError}</label>
-      </div>
-      <br />
-      <div className={"inputContainer"}>
-        <input
-          value={password}
-          type="password"
-          placeholder="Senha"
-          onChange={(ev) => setPassword(ev.target.value)}
-          className={"inputBox"}
-        />
-        <label className="errorLabel">{passwordError}</label>
-      </div>
-      <br />
-      <div
-        style={{ flexDirection: "row", gap: "20px" }}
-        className={"inputContainer"}
-      >
-        <input
-          className="inputButton btn btn-primary px-5 py-2 text-center"
-          type="button"
-          onClick={(e) => handleLogin(e)}
-          value="Faça login como usuário"
-          name="user"
-        />
-        <input
-          className="inputButton btn btn-primary px-5 py-2 text-center"
-          type="button"
-          onClick={(e) => handleLogin(e)}
-          name="admin"
-          value="Faça login como administrador"
-        />
+      <div className="content" style={{ width: "100%", display: 'flex', justifyContent: "space-evenly", flexWrap: "wrap", gap: "10px", alignItems: 'center' }}>
+        <div style={containerStyle}>
+          <div style={sectionStyle}>
+            <div style={headerStyle}>
+              Username: maaz
+            </div>
+          </div>
+          <div style={sectionStyle}>
+            <div style={headerStyle}>
+              Password: maazjawaid123
+            </div>
+          </div>
+          <div style={sectionStyle}>
+            <p style={infoStyle}>
+              Please note that admin credentials are the same. You can log in as an admin if needed. This site was developed for a client in Brazil, so use Google Translate to view it in English for easier navigation.
+            </p>
+          </div>
+          <div style={regardsStyle}>
+            Regards, Maaz Jawaid
+          </div>
+        </div>
+
+        <br />
+        <div className="input" style={containerStyle}>
+          <div className={"inputContainer"}>
+            <input
+              value={username}
+              placeholder="Nome de usuário"
+              onChange={(ev) => setUsername(ev.target.value)}
+              className={"inputBox"}
+            />
+            <label className="errorLabel">{userNameError}</label>
+          </div>
+          <br />
+          <div className={"inputContainer"}>
+            <input
+              value={password}
+              type="password"
+              placeholder="Senha"
+              onChange={(ev) => setPassword(ev.target.value)}
+              className={"inputBox"}
+            />
+            <label className="errorLabel">{passwordError}</label>
+          </div>
+          <br />
+          <div
+            style={{ flexDirection: "row", gap: "20px" }}
+            className={"inputContainer"}
+          >
+            <input
+              className="inputButton btn btn-primary px-5 py-2 text-center"
+              type="button"
+              onClick={(e) => handleLogin(e)}
+              value="Faça login como usuário"
+              name="user"
+            />
+            <input
+              className="inputButton btn btn-primary px-5 py-2 text-center"
+              type="button"
+              onClick={(e) => handleLogin(e)}
+              name="admin"
+              value="Faça login como administrador"
+            />
+          </div>
+        </div>
       </div>
 
       <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
